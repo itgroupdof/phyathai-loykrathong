@@ -2,409 +2,191 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ลอยกระทงออนไลน์ ๒๕๖๙ | โรงพยาบาลพญาไท ๒ (สนามเป้า)</title>
-  <meta name="description" content="ร่วมสืบสานประเพณีลอยกระทงออนไลน์ ปี ๒๕๖๙ กับโรงพยาบาลพญาไท ๒ สนามเป้า รักษ์โลก อนุรักษ์สายน้ำ ๑๐๐% เลือกสถานที่ได้ทั่วไทย พร้อมกระทง ๙ แบบมงคล">
-  
-  <!-- Google Fonts: Kanit & Sarabun -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ลอยกระทงออนไลน์ | โรงพยาบาลพญาไท ๒ สนามเป้า</title>
+  <meta name="description" content="ร่วมลอยกระทงออนไลน์กับโรงพยาบาลพญาไท ๒ สนามเป้า เพื่อสิ่งแวดล้อม ลดขยะสู่ธรรมชาติ ๑๐๐%">
+  <meta name="theme-color" content="#0a1628">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- html2canvas for capturing digital certificate / wish card -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- App Container (Full-bleed immersive view) -->
-  <div class="app-viewport">
-    
-    <!-- Top Glassmorphism Nav Header -->
-    <header class="top-nav">
-      <div class="nav-left">
-        <div class="logo-box">
-          <img src="phyathai2-logo.png" alt="โรงพยาบาลพญาไท ๒ สนามเป้า" class="hospital-logo-img">
-        </div>
-      </div>
 
-      <div class="nav-center">
-        <!-- Location Picker Capsule -->
-        <button class="nav-capsule-btn" id="openLocationModalBtn" title="เปลี่ยนสถานที่ลอย">
-          <span class="capsule-icon">📍</span>
-          <span class="capsule-text" id="headerLocationName">แม่น้ำเจ้าพระยา (กทม.)</span>
-          <span class="capsule-arrow">▾</span>
-        </button>
-      </div>
+<!-- Stars Background -->
+<div class="stars-container" id="starsContainer"></div>
 
-      <div class="nav-right">
-        <!-- Audio BGM Capsule Button -->
-        <button class="nav-capsule-btn music-toggle" id="musicToggleBtn" title="เปิด/ปิดเพลงลอยกระทง">
-          <span class="music-note-icon" id="musicIcon">🎵</span>
-          <span class="music-state-text" id="musicText">เปิดเพลง</span>
-        </button>
+<!-- Moon -->
+<div class="moon">
+  <div class="moon-glow"></div>
+  <div class="moon-surface"></div>
+  <div class="moon-crater c1"></div>
+  <div class="moon-crater c2"></div>
+  <div class="moon-crater c3"></div>
+</div>
 
-        <!-- Eco Badge -->
-        <div class="eco-capsule" title="โครงการ Green Hospital เพื่อสิ่งแวดล้อม">
-          <span class="eco-leaf">🌱</span>
-          <span class="eco-text">รักษ์โลก ๒๕๖๙</span>
-        </div>
-      </div>
-    </header>
+<!-- Lanterns floating -->
+<div class="lanterns-container" id="lanternsContainer"></div>
 
-    <!-- Fullscreen Living River Canvas & Stage -->
-    <div class="river-canvas-container" id="riverStage" data-location="chaophraya">
-      <!-- Sky, Full Moon, Lanterns, Stars -->
-      <div class="sky-layer">
-        <div class="full-moon">
-          <div class="moon-aura"></div>
-        </div>
-        <div class="stars-field" id="starsContainer"></div>
-        <div class="sky-lanterns-field" id="lanternsContainer"></div>
-      </div>
-
-      <!-- Panoramic Architectural Silhouette & Landmarks (Wat Arun, Sukhothai Chedi, Lanna Temple, Ayutthaya Ruins, Phromthep Cape) -->
-      <div class="landmark-silhouette" id="landmarkSilhouette"></div>
-
-      <!-- Realistic Water Surface with Reflections & Waves -->
-      <div class="water-canvas-layer">
-        <div class="landmark-water-reflection" id="landmarkReflection"></div>
-        <div class="water-mesh-wave wave-back"></div>
-        <div class="water-mesh-wave wave-mid"></div>
-        <div class="water-mesh-wave wave-front"></div>
-        <div class="water-specular-shimmer"></div>
-      </div>
-
-      <!-- Synchronous Floating Krathongs Layer (3D perspective floating) -->
-      <div class="krathong-river-flow" id="krathongRiverFlow"></div>
-
-      <!-- Live Floating Ecological Counter & Impact Badge -->
-      <div class="eco-floating-card">
-        <div class="eco-card-header">
-          <span class="card-hospital-label">รพ.พญาไท ๒ • ลอยกระทง ๒๕๖๙</span>
-        </div>
-        <div class="eco-stat-row">
-          <div class="stat-col">
-            <span class="stat-num" id="krathongCounter">1,254</span>
-            <span class="stat-desc">กระทงออนไลน์</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-col">
-            <span class="stat-num eco-green" id="wasteReducedKg">627.0</span>
-            <span class="stat-desc">กก. ขยะที่ลดได้</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-col">
-            <span class="stat-num eco-gold">100%</span>
-            <span class="stat-desc">ไร้ขยะสู่ธรรมชาติ</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Floating Action Controls (Bottom Area) -->
-      <div class="floating-action-hud">
-        <button class="hud-pill-btn secondary" id="viewWishesBtn">
-          📜 ดูคำอธิษฐานทั้งหมด
-        </button>
-        
-        <!-- Primary Launch Button (Bottom Centered) -->
-        <button class="primary-float-btn" id="openCustomizerBtn">
-          <span class="btn-glow-ring"></span>
-          <span class="btn-krathong-icon">🪷</span>
-          <span class="btn-main-label">ลอยกระทง</span>
-        </button>
-      </div>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-content">
+    <div class="logo-wrap">
+      <img src="phyathai2-logo.png" alt="โรงพยาบาลพญาไท ๒" class="hospital-logo" id="hospitalLogo">
     </div>
-
-    <!-- Customizer Drawer / Bottom Sheet (Sliding from bottom on mobile, side modal on desktop) -->
-    <div class="drawer-overlay" id="customizerDrawer">
-      <div class="drawer-panel">
-        <div class="drawer-drag-handle" id="drawerDragHandle"></div>
-        
-        <div class="drawer-header">
-          <div class="drawer-title-group">
-            <span class="drawer-kicker">สืบสานประเพณีลอยกระทง ๒๕๖๙</span>
-            <h3>🪷 เลือกกระทงมงคล และคำอธิษฐาน</h3>
-          </div>
-          <button class="drawer-close-btn" id="closeDrawerBtn" aria-label="ปิด">&times;</button>
-        </div>
-
-        <div class="drawer-body">
-          <form id="loyKrathongForm">
-            
-            <!-- Step 1: 9 Auspicious Krathongs -->
-            <div class="section-block">
-              <div class="section-title-row">
-                <span class="step-badge">๑</span>
-                <label class="section-title">เลือกกระทง ๙ แบบเลขมงคล (สุขภาพ & รักษ์โลก)</label>
-              </div>
-
-              <div class="krathong-cards-grid" id="krathongSelector">
-                
-                <!-- 1. บัวสวรรค์สุขภาพดี -->
-                <label class="k-card active">
-                  <input type="radio" name="krathongType" value="k1_lotus_pink" checked>
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k1"></div>
-                    <span class="k-card-name">บัวสวรรค์สุขภาพดี</span>
-                    <span class="k-card-blessing">จิตใจแจ่มใส อายุยืนยาว</span>
-                  </div>
-                </label>
-
-                <!-- 2. ใบตองทองนำโชค -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k2_banana_gold">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k2"></div>
-                    <span class="k-card-name">ใบตองทองนำโชค</span>
-                    <span class="k-card-blessing">แคล้วคลาด ปลอดโรคภัย</span>
-                  </div>
-                </label>
-
-                <!-- 3. ประทีปทองส่องทาง -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k3_golden_lantern">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k3"></div>
-                    <span class="k-card-name">ประทีปทองส่องทาง</span>
-                    <span class="k-card-blessing">ปัญญา สว่างไสว สำเร็จ</span>
-                  </div>
-                </label>
-
-                <!-- 4. ผกาแก้วการุณย์ -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k4_mali_glass">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k4"></div>
-                    <span class="k-card-name">ผกาแก้วการุณย์</span>
-                    <span class="k-card-blessing">ครอบครัวอบอุ่น มีความสุข</span>
-                  </div>
-                </label>
-
-                <!-- 5. บัวชมพูมงคลเก้า -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k5_royal_pink">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k5"></div>
-                    <span class="k-card-name">บัวชมพูมงคลเก้า</span>
-                    <span class="k-card-blessing">โชคลาภ ร่ำรวย สุขภาพดี</span>
-                  </div>
-                </label>
-
-                <!-- 6. ใบตองลายวิจิตร -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k6_banana_craft">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k6"></div>
-                    <span class="k-card-name">ใบตองลายวิจิตร</span>
-                    <span class="k-card-blessing">สืบสานศิลป์ไทย ราบรื่น</span>
-                  </div>
-                </label>
-
-                <!-- 7. กะลามะพร้าวธรรมชาติ -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k7_coconut_shell">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k7"></div>
-                    <span class="k-card-name">กะลามะพร้าวธรรมชาติ</span>
-                    <span class="k-card-blessing">เรียบง่าย รักษ์โลก ๑๐๐%</span>
-                  </div>
-                </label>
-
-                <!-- 8. ดอกไม้สดผาสุก -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k8_fresh_flowers">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k8"></div>
-                    <span class="k-card-name">ดอกไม้สดผาสุก</span>
-                    <span class="k-card-blessing">สดชื่น หายป่วยโดยเร็ว</span>
-                  </div>
-                </label>
-
-                <!-- 9. ดอกบัวแก้วรัตนตรัย -->
-                <label class="k-card">
-                  <input type="radio" name="krathongType" value="k9_crystal_lotus">
-                  <div class="k-card-inner">
-                    <div class="k-card-art" id="art_k9"></div>
-                    <span class="k-card-name">บัวแก้วรัตนตรัย</span>
-                    <span class="k-card-blessing">สิริมงคล คุ้มครองคุ้มภัย</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            <!-- Step 2: Name & Wishes -->
-            <div class="section-block">
-              <div class="section-title-row">
-                <span class="step-badge">๒</span>
-                <label for="userName" class="section-title">ชื่อของคุณ / ครอบครัว / ผู้ร่วมขอพร <span class="req">*</span></label>
-              </div>
-              <input type="text" id="userName" name="name" class="modern-input" placeholder="เช่น คุณวิภาวรรณ และครอบครัว" required maxlength="50">
-            </div>
-
-            <div class="section-block">
-              <div class="section-title-row">
-                <span class="step-badge">๓</span>
-                <label for="userDesc" class="section-title">คำอธิษฐานขอพร <span class="req">*</span></label>
-              </div>
-
-              <!-- Quick Health & Wellness Wish Chips -->
-              <div class="wish-chips-row">
-                <button type="button" class="wish-chip" data-wish="ขอให้สุขภาพร่างกายแข็งแรง ปราศจากโรคภัยไข้เจ็บ มีอายุยืนยาวทั้งครอบครัว">🏥 สุขภาพแข็งแรง</button>
-                <button type="button" class="wish-chip" data-wish="ขอขมาพระแม่คงคา ร่วมอนุรักษ์สายน้ำ ไม่สร้างขยะสู่ธรรมชาติ">💧 ขอขมาพระแม่คงคา</button>
-                <button type="button" class="wish-chip" data-wish="ขอให้คนที่เรารักและผู้ป่วยทุกคนหายป่วยโดยเร็ว มีพลังใจที่เข้มแข็ง">💖 หายป่วยโดยเร็ว</button>
-                <button type="button" class="wish-chip" data-wish="ขอให้ชีวิตมีความสุข ความเจริญ การงานราบรื่น การเงินมั่งคั่ง สมปรารถนา">✨ ชีวิตรุ่งเรือง</button>
-                <button type="button" class="wish-chip" data-wish="ขอขอบคุณทีมแพทย์ พยาบาล และบุคลากร รพ.พญาไท 2 ที่ดูแลสุขภาพด้วยหัวใจ">👨‍⚕️ ขอบคุณทีมแพทย์</button>
-              </div>
-
-              <textarea id="userDesc" name="desc" class="modern-textarea" rows="3" placeholder="พิมพ์คำอธิษฐานของคุณ หรือคลิกเลือกข้อความมงคลด้านบน..." required maxlength="250"></textarea>
-            </div>
-
-            <!-- Submit Button Inside Drawer -->
-            <div class="drawer-action-footer">
-              <button type="submit" class="launch-submit-btn" id="submitKrathongBtn">
-                <span class="btn-sparkle">✨</span>
-                <span>จุดประทีป แล้วปล่อยกระทงลงน้ำ</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+    <div class="header-title">
+      <span class="title-main">วันลอยกระทง ๒๕๖๙</span>
+      <span class="title-sub">ลอยทุกข์ ลอยโศก รักษ์โลก รักษ์น้ำ</span>
     </div>
+    <button class="btn-wishes-wall" onclick="openWishesWall()">
+      <span>🏮</span> กระทงทั้งหมด
+    </button>
+  </div>
+</header>
 
-    <!-- Location Modal Selection Dialog -->
-    <div class="modal-backdrop" id="locationModal">
-      <div class="modal-window">
-        <div class="modal-head">
-          <h4>📍 เลือกสถานที่ลอยกระทงในประเทศไทย</h4>
-          <button class="modal-close" id="closeLocModalBtn">&times;</button>
-        </div>
-        <div class="modal-content">
-          <p class="modal-hint">เลือกบรรยากาศสายน้ำที่คุณประทับใจ ฉากและแสงจะปรับตามสถานที่ทันที:</p>
-          <div class="location-choices-list">
-            
-            <div class="loc-choice-item active" data-loc="chaophraya">
-              <div class="loc-choice-icon">🏛️</div>
-              <div class="loc-choice-meta">
-                <strong>แม่น้ำเจ้าพระยา (วัดอรุณฯ - กรุงเทพมหานคร)</strong>
-                <span>สายน้ำหลักของไทย ชมแสงไฟวัดอรุณฯ สะท้อนผิวน้ำเจ้าพระยา</span>
-              </div>
-              <div class="loc-check-mark">✓</div>
-            </div>
+<!-- Eco Badge -->
+<div class="eco-badge">
+  <span class="eco-icon">🌿</span>
+  <span class="eco-text">กระทงอิเล็กทรอนิกส์ ลดขยะสู่ธรรมชาติ <strong>๑๐๐%</strong></span>
+</div>
 
-            <div class="loc-choice-item" data-loc="sukhothai">
-              <div class="loc-choice-icon">🛕</div>
-              <div class="loc-choice-meta">
-                <strong>สุโขทัย (อุทยานประวัติศาสตร์สุโขทัย)</strong>
-                <span>ต้นกำเนิดประเพณีเผาเทียนเล่นไฟ สระตระกวนและเจดีย์โบราณ</span>
-              </div>
-              <div class="loc-check-mark">✓</div>
-            </div>
+<!-- Main Scene -->
+<main class="main-scene">
 
-            <div class="loc-choice-item" data-loc="chiangmai">
-              <div class="loc-choice-icon">🏮</div>
-              <div class="loc-choice-meta">
-                <strong>เชียงใหม่ (ริมแม่น้ำปิง ประเพณียี่เป็ง)</strong>
-                <span>โคมลอยสว่างไสวเต็มฟากฟ้าเมืองเหนือ สะท้อนสายน้ำปิง</span>
-              </div>
-              <div class="loc-check-mark">✓</div>
-            </div>
-
-            <div class="loc-choice-item" data-loc="ayutthaya">
-              <div class="loc-choice-icon">🏯</div>
-              <div class="loc-choice-meta">
-                <strong>พระนครศรีอยุธยา (คุ้งน้ำอยุธยา มรดกโลก)</strong>
-                <span>คุ้งน้ำหน้าวัดไชยวัฒนาราม ย้อนรอยประวัติศาสตร์ราชธานีเก่า</span>
-              </div>
-              <div class="loc-check-mark">✓</div>
-            </div>
-
-            <div class="loc-choice-item" data-loc="phuket">
-              <div class="loc-choice-icon">🌊</div>
-              <div class="loc-choice-meta">
-                <strong>ภูเก็ต (แหลมพรหมเทพ ทะเลอันดามัน)</strong>
-                <span>ลอยประทีปคืนเพ็ญริมชายหาดอันดามัน ดื่มด่ำคลื่นสงบยามราตรี</span>
-              </div>
-              <div class="loc-check-mark">✓</div>
-            </div>
-
-          </div>
-        </div>
-      </div>
+  <!-- River Scene -->
+  <div class="river-scene">
+    <!-- Water surface -->
+    <div class="water-surface">
+      <div class="water-shimmer"></div>
+      <div class="water-ripple r1"></div>
+      <div class="water-ripple r2"></div>
+      <div class="water-ripple r3"></div>
+      <!-- Community krathongs on water -->
+      <div class="community-krathongs" id="communityKrathongs"></div>
     </div>
-
-    <!-- Community Wishes Wall Modal -->
-    <div class="modal-backdrop" id="wishesModal">
-      <div class="modal-window">
-        <div class="modal-head">
-          <h4>📜 ลานคำอธิษฐาน & ผู้ร่วมลอยกระทง ๒๕๖๙</h4>
-          <button class="modal-close" id="closeWishesModalBtn">&times;</button>
-        </div>
-        <div class="modal-content">
-          <p class="modal-hint">รวมคำอวยพรและพลังบวกเพื่อสุขภาพและสิ่งแวดล้อม จากผู้รับบริการ รพ.พญาไท ๒</p>
-          <div class="wishes-feed" id="wishesFeedList"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Digital Wish Certificate & Card (for Screenshot / Download) -->
-    <div class="modal-backdrop" id="certificateModal">
-      <div class="modal-window cert-window">
-        
-        <!-- The Visual Card Element Captured by html2canvas -->
-        <div class="digital-cert-card" id="certCardToCapture">
-          <!-- Card Decorative Border -->
-          <div class="cert-gold-border"></div>
-
-          <!-- Hospital Header inside Card -->
-          <div class="cert-header">
-            <img src="phyathai2-logo.png" alt="Phyathai 2 Hospital" class="cert-logo-img">
-            <div class="cert-season-badge">
-              <span>ลอยกระทง ๒๕๖๙</span>
-              <span class="sub-eco">Green Hospital</span>
-            </div>
-          </div>
-
-          <!-- Krathong Illustration Display -->
-          <div class="cert-krathong-hero" id="certKrathongHero"></div>
-
-          <!-- Location & Details -->
-          <div class="cert-location-tag">
-            <span>📍 ณ </span><strong id="certLocText">แม่น้ำเจ้าพระยา กรุงเทพมหานคร</strong>
-          </div>
-
-          <!-- User Name & Wish -->
-          <div class="cert-content-box">
-            <div class="cert-user-name" id="certUserName">คุณวิภาวรรณ สุขสม</div>
-            <div class="cert-wish-quote" id="certWishQuote">
-              "ขอให้สุขภาพร่างกายแข็งแรง ปราศจากโรคภัยไข้เจ็บ มีอายุยืนยาว มีแต่ความสุขความเจริญ"
-            </div>
-          </div>
-
-          <!-- Card Footer Eco Pledge -->
-          <div class="cert-footer">
-            <div class="eco-stamp">
-              <span class="stamp-icon">🌱</span>
-              <span>ร่วมอนุรักษ์สายน้ำ ลดขยะสู่ธรรมชาติ ๑๐๐% • รพ.พญาไท ๒</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Download & Close Action Buttons -->
-        <div class="cert-actions-row">
-          <button class="cert-btn primary" id="downloadImageBtn">
-            📸 บันทึกภาพคำอธิษฐาน (Save Image)
-          </button>
-          <button class="cert-btn secondary" id="closeCertBtn">
-            🌊 ดูกระทงลอยบนน้ำ
-          </button>
-        </div>
-        <div class="cert-status-msg" id="certStatusMsg"></div>
-      </div>
-    </div>
-
   </div>
 
-  <script src="script.js"></script>
+  <!-- Center Stage -->
+  <div class="center-stage">
+
+    <!-- Krathong Type Selector (top thumbnails) -->
+    <div class="type-selector" id="typeSelector">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- Main Krathong Card -->
+    <div class="krathong-card" id="krathongCard">
+
+      <!-- SVG Krathong Art -->
+      <div class="krathong-art-wrap" id="krathongArtWrap">
+        <div class="krathong-water-reflection" id="krathongReflection"></div>
+        <div class="krathong-art" id="krathongArt">
+          <!-- filled by JS -->
+        </div>
+        <div class="krathong-label-name" id="krathongTypeName">บัวสวรรค์สุขภาพดี</div>
+      </div>
+
+      <!-- Form Overlay ON the krathong -->
+      <div class="form-overlay" id="formOverlay">
+        <div class="form-inner">
+          <div class="form-field">
+            <label class="field-label">✨ ชื่อของคุณ</label>
+            <input type="text" id="inputName" class="field-input" placeholder="กรอกชื่อ-นามสกุล" maxlength="50">
+          </div>
+          <div class="form-field">
+            <label class="field-label">🙏 คำอธิษฐาน</label>
+            <textarea id="inputWish" class="field-textarea" placeholder="ขอให้สุขภาพแข็งแรง มีความสุข..." maxlength="120" rows="3"></textarea>
+          </div>
+          <div class="form-field">
+            <label class="field-label">📍 สถานที่ลอยกระทง</label>
+            <select id="inputLocation" class="field-select">
+              <option value="chaophraya">🌊 แม่น้ำเจ้าพระยา กรุงเทพฯ</option>
+              <option value="sukhothai">🏯 อุทยานประวัติศาสตร์สุโขทัย</option>
+              <option value="chiangmai">🏔️ แม่น้ำปิง เชียงใหม่</option>
+              <option value="ayutthaya">⛩️ วัดพนัญเชิง อยุธยา</option>
+              <option value="phuket">🌺 สะพานหิน ภูเก็ต</option>
+            </select>
+          </div>
+          <button class="btn-float" id="btnFloat" onclick="floatKrathong()">
+            <span class="btn-icon">🪷</span>
+            <span class="btn-text">ลอยกระทง</span>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /krathong-card -->
+
+    <!-- Char counter -->
+    <div class="char-counter" id="charCounter">คำอธิษฐาน <span id="charCount">0</span>/120 ตัวอักษร</div>
+
+  </div><!-- /center-stage -->
+
+</main>
+
+<!-- Float Animation Overlay -->
+<div class="float-overlay" id="floatOverlay">
+  <div class="float-krathong-animate" id="floatAnimate">
+    <div class="float-art" id="floatArt"></div>
+  </div>
+  <div class="float-message" id="floatMessage">
+    <div class="float-msg-icon">🙏</div>
+    <div class="float-msg-name" id="floatMsgName"></div>
+    <div class="float-msg-wish" id="floatMsgWish"></div>
+    <div class="float-msg-eco">🌿 กระทงของคุณปลอดภัยต่อธรรมชาติ ๑๐๐%</div>
+    <div class="float-msg-buttons">
+      <button class="btn-save" onclick="saveCard()">📸 บันทึกการ์ด</button>
+      <button class="btn-new" onclick="resetForm()">🪷 ลอยกระทงใหม่</button>
+    </div>
+  </div>
+  <!-- Particles -->
+  <div class="particles-container" id="particlesContainer"></div>
+</div>
+
+<!-- Wishes Wall Modal -->
+<div class="modal-overlay" id="wishesModal" onclick="closeWishesWall(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">🏮 กระทงทั้งหมด</h2>
+      <button class="modal-close" onclick="closeWishesWall()">✕</button>
+    </div>
+    <div class="modal-body" id="wishesModalBody">
+      <div class="loading-wishes">กำลังโหลด...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden canvas for card save -->
+<canvas id="saveCanvas" style="display:none"></canvas>
+
+<!-- Audio -->
+<audio id="bgMusic" loop>
+  <!-- Web Audio API fallback -->
+</audio>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">
+  <span id="audioIcon">🔇</span>
+</div>
+
+<!-- Stat counter bottom -->
+<div class="stat-bar">
+  <div class="stat-item">
+    <span class="stat-num" id="statCount">0</span>
+    <span class="stat-label">กระทงที่ลอยแล้ว</span>
+  </div>
+  <div class="stat-divider">|</div>
+  <div class="stat-item">
+    <span class="stat-num">๑๐๐%</span>
+    <span class="stat-label">ลดขยะสู่แม่น้ำ</span>
+  </div>
+  <div class="stat-divider">|</div>
+  <div class="stat-item">
+    <span class="stat-num">๒๕๖๙</span>
+    <span class="stat-label">ปีพุทธศักราช</span>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
