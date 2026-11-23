@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ลอยกระทงออนไลน์ | โรงพยาบาลพญาไท ๒ สนามเป้า</title>
-  <meta name="description" content="ร่วมลอยกระทงออนไลน์กับโรงพยาบาลพญาไท ๒ สนามเป้า เพื่อสิ่งแวดล้อม ลดขยะสู่ธรรมชาติ ๑๐๐%">
+  <title>ลอยกระทงออนไลน์ ๒๕๖๙ | Green Hospital · รพ.พญาไท 2</title>
+  <meta name="description" content="ร่วมลอยกระทงออนไลน์รักษ์โลกกับโรงพยาบาลพญาไท 2 พร้อมคำนวณขยะและคาร์บอนที่ช่วยลดได้">
   <meta name="theme-color" content="#0a1628">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +35,8 @@
       <img src="phyathai2-logo.png" alt="โรงพยาบาลพญาไท ๒" class="hospital-logo" id="hospitalLogo">
     </div>
     <div class="header-title">
-      <span class="title-main">วันลอยกระทง ๒๕๖๙</span>
-      <span class="title-sub">ลอยทุกข์ ลอยโศก รักษ์โลก รักษ์น้ำ</span>
+      <span class="title-main">ลอยกระทงออนไลน์ ๒๕๖๙</span>
+      <span class="title-sub">Green Hospital · โรงพยาบาลพญาไท 2</span>
     </div>
     <button class="btn-wishes-wall" onclick="openWishesWall()">
       <span>🏮</span> กระทงทั้งหมด
@@ -47,7 +47,7 @@
 <!-- Eco Badge -->
 <div class="eco-badge">
   <span class="eco-icon">🌿</span>
-  <span class="eco-text">กระทงอิเล็กทรอนิกส์ ลดขยะสู่ธรรมชาติ <strong>๑๐๐%</strong></span>
+  <span class="eco-text">ลอยออนไลน์ ลดขยะและคาร์บอนสู่ธรรมชาติ <strong>๑๐๐%</strong></span>
 </div>
 
 <!-- Main Scene -->
@@ -70,7 +70,7 @@
   <div class="center-stage">
 
     <!-- Krathong Type Selector (top thumbnails) -->
-    <div class="type-selector" id="typeSelector">
+    <div class="type-selector" id="typeSelector" aria-label="เลือกรูปแบบกระทง">
       <!-- filled by JS -->
     </div>
 
@@ -90,27 +90,58 @@
       <div class="form-overlay" id="formOverlay">
         <div class="form-inner">
           <div class="form-field">
-            <label class="field-label">✨ ชื่อของคุณ</label>
+            <label class="field-label" for="inputName">✨ ชื่อของคุณ / ผู้ร่วมอวยพร</label>
             <input type="text" id="inputName" class="field-input" placeholder="กรอกชื่อ-นามสกุล" maxlength="50">
           </div>
           <div class="form-field">
-            <label class="field-label">🙏 คำอธิษฐาน</label>
+            <label class="field-label" for="inputWish">🙏 คำอธิษฐาน / ข้อความขอพร</label>
             <textarea id="inputWish" class="field-textarea" placeholder="ขอให้สุขภาพแข็งแรง มีความสุข..." maxlength="120" rows="3"></textarea>
           </div>
+          <div class="wish-tags" aria-label="เลือกคำอธิษฐานสำเร็จรูป">
+            <button type="button" class="wish-tag">ขอให้สุขภาพแข็งแรง</button>
+            <button type="button" class="wish-tag">ขอขมาพระแม่คงคา</button>
+            <button type="button" class="wish-tag">ขอให้เจริญรุ่งเรือง</button>
+            <button type="button" class="wish-tag">ขอให้ครอบครัวมีความสุข</button>
+            <button type="button" class="wish-tag">ขอให้ผู้ป่วยหายไว</button>
+          </div>
           <div class="form-field">
-            <label class="field-label">📍 สถานที่ลอยกระทง</label>
+            <label class="field-label" for="inputLocation">📍 สถานที่ลอยกระทง</label>
             <select id="inputLocation" class="field-select">
-              <option value="chaophraya">🌊 แม่น้ำเจ้าพระยา กรุงเทพฯ</option>
-              <option value="sukhothai">🏯 อุทยานประวัติศาสตร์สุโขทัย</option>
-              <option value="chiangmai">🏔️ แม่น้ำปิง เชียงใหม่</option>
-              <option value="ayutthaya">⛩️ วัดพนัญเชิง อยุธยา</option>
-              <option value="phuket">🌺 สะพานหิน ภูเก็ต</option>
+              <option value="chaophraya">🏯 แม่น้ำเจ้าพระยา · วัดอรุณฯ / ไอคอนสยาม กรุงเทพฯ</option>
+              <option value="sukhothai">🕯️ อุทยานประวัติศาสตร์สุโขทัย · ประเพณีเผาเทียน เล่นไฟ</option>
+              <option value="chiangmai">🏮 เชียงใหม่ · ริมน้ำปิง ยี่เป็ง</option>
+              <option value="ayutthaya">🛕 กรุงเก่าอยุธยา · เกาะเมืองมรดกโลก</option>
+              <option value="phuket">🌅 ภูเก็ต · แหลมพรหมเทพ</option>
+              <option value="tak">🪔 แม่น้ำปิง จ.ตาก · ลอยกระทงสาย</option>
+              <option value="lampang">⛵ แม่น้ำวัง จ.ลำปาง · ล่องสะเปา</option>
+              <option value="chiangrai">⛰️ แม่น้ำกก จ.เชียงราย</option>
+              <option value="phitsanulok">🙏 แม่น้ำน่าน จ.พิษณุโลก</option>
+              <option value="nakhonsawan">🐉 ปากน้ำโพ จ.นครสวรรค์</option>
+              <option value="kanchanaburi">🌉 แม่น้ำแคว จ.กาญจนบุรี</option>
+              <option value="samutsongkhram">🛶 แม่น้ำแม่กลอง · อัมพวา</option>
+              <option value="suphanburi">🌾 แม่น้ำท่าจีน จ.สุพรรณบุรี</option>
+              <option value="chachoengsao">🏛️ แม่น้ำบางปะกง จ.ฉะเชิงเทรา</option>
+              <option value="nakhonphanom">🌕 แม่น้ำโขง จ.นครพนม</option>
+              <option value="ubon">🌺 แม่น้ำมูล จ.อุบลราชธานี</option>
+              <option value="surat">🌴 แม่น้ำตาปี จ.สุราษฎร์ธานี</option>
+            </select>
+          </div>
+          <div class="form-field baseline-field">
+            <label class="field-label" for="inputBaseline">♻️ ถ้าลอยกระทงจริง ปกติคุณใช้กระทงแบบไหน?</label>
+            <select id="inputBaseline" class="field-select">
+              <option value="natural">กระทงวัสดุธรรมชาติ · ประมาณ 0.50 กก. / 0.86 kgCO₂e</option>
+              <option value="bread">กระทงขนมปัง · ประมาณ 0.30 กก. / 0.39 kgCO₂e</option>
             </select>
           </div>
           <button class="btn-float" id="btnFloat" onclick="floatKrathong()">
             <span class="btn-icon">🪷</span>
             <span class="btn-text">ลอยกระทง</span>
           </button>
+          <p class="save-status" id="saveStatus" role="status" aria-live="polite"></p>
+          <div class="impact-preview" aria-live="polite">
+            <span>🌿 <strong id="impactCo2">0.86</strong> kgCO₂e ลดได้</span>
+            <span>🗑️ <strong id="impactWaste">0.50</strong> กก. ไม่ต้องฝังกลบ</span>
+          </div>
         </div>
       </div>
 
@@ -132,7 +163,8 @@
     <div class="float-msg-icon">🙏</div>
     <div class="float-msg-name" id="floatMsgName"></div>
     <div class="float-msg-wish" id="floatMsgWish"></div>
-    <div class="float-msg-eco">🌿 กระทงของคุณปลอดภัยต่อธรรมชาติ ๑๐๐%</div>
+    <div class="float-msg-eco">🌿 กระทงออนไลน์ของคุณช่วยลดขยะและคาร์บอน</div>
+    <div class="float-msg-impact" id="floatMsgImpact"></div>
     <div class="float-msg-buttons">
       <button class="btn-save" onclick="saveCard()">📸 บันทึกการ์ด</button>
       <button class="btn-new" onclick="resetForm()">🪷 ลอยกระทงใหม่</button>

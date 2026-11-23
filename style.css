@@ -452,6 +452,13 @@ html, body {
   flex-direction: column;
   gap: 12px;
 }
+.wish-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: -2px; }
+.wish-tag {
+  border: 1px solid rgba(42,170,150,.38); border-radius: 999px; padding: 5px 10px;
+  background: rgba(26,122,110,.18); color: #d7fff2; font: 500 .7rem var(--font-th); cursor: pointer;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.wish-tag:hover { background: rgba(26,122,110,.4); border-color: var(--teal-light); transform: translateY(-1px); }
 .form-field {
   display: flex;
   flex-direction: column;
@@ -529,6 +536,15 @@ html, body {
 .btn-float:hover { transform: translateY(-2px); background-position: right center; box-shadow: 0 8px 30px rgba(200,151,58,0.6); }
 .btn-float:active { transform: translateY(0); }
 .btn-float:hover::before { transform: scale(1); }
+.impact-preview {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 18px; margin-top: 1px;
+  color: rgba(226,255,241,.78); font-size: .75rem; text-align: center;
+}
+.impact-preview strong { color: #aaf4d7; font-variant-numeric: tabular-nums; }
+.save-status { min-height: 1.1em; text-align: center; font-size: .76rem; color: rgba(255,255,255,.65); }
+.save-status[data-state="success"] { color: #8df0bd; }
+.save-status[data-state="error"] { color: #ff9eaa; }
+.save-status[data-state="pending"] { color: var(--gold-pale); }
 .btn-icon { font-size: 1.3rem; animation: iconPulse 2s ease-in-out infinite; }
 @keyframes iconPulse { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.15) rotate(3deg); } }
 
@@ -597,6 +613,9 @@ html, body {
   border: 1px solid rgba(42,170,150,0.4);
   border-radius: 20px;
   background: rgba(26,122,110,0.2);
+}
+.float-msg-impact {
+  max-width: 440px; padding: 0 12px; color: rgba(255,255,255,.7); font-size: .78rem; line-height: 1.6;
 }
 .float-msg-buttons {
   display: flex;

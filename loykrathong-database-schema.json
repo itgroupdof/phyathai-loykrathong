@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Loy Krathong wish record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "desc", "location", "locationLabel", "krathong", "baseline", "wasteKg", "avoidedCo2Kg", "year", "source"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1, "maxLength": 50},
+    "desc": {"type": "string", "minLength": 1, "maxLength": 120},
+    "location": {"type": "string"},
+    "locationLabel": {"type": "string"},
+    "krathong": {"type": "string"},
+    "baseline": {"enum": ["natural", "bread"]},
+    "wasteKg": {"type": "number", "minimum": 0},
+    "avoidedCo2Kg": {"type": "number", "minimum": 0},
+    "year": {"type": "string"},
+    "source": {"type": "string"},
+    "timestamp": {"type": "string"}
+  }
+}

@@ -6,8 +6,19 @@
 'use strict';
 
 // ---- CONFIG ----
+// Configure this URL in the Apps Script Web App deployment. Leave empty to disable cloud saves.
 const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbxovjMWLTCTzCxF4TLwVjfooHgT5sXFr6p0Ml4oSlmaGTkdUe1r6LeYVId07GmQBD9F/exec';
 const YEAR = '๒๕๖๙';
+const IMPACT = { natural: { waste: 0.50, co2: 0.86 }, bread: { waste: 0.30, co2: 0.39 } };
+const LOCATION_LABELS = {
+  chaophraya: 'แม่น้ำเจ้าพระยา (วัดอรุณฯ – กรุงเทพฯ)', sukhothai: 'อุทยานประวัติศาสตร์สุโขทัย',
+  chiangmai: 'เชียงใหม่ ริมน้ำปิง', ayutthaya: 'กรุงเก่าอยุธยา', phuket: 'ภูเก็ต แหลมพรหมเทพ',
+  tak: 'แม่น้ำปิง จ.ตาก', lampang: 'แม่น้ำวัง จ.ลำปาง', chiangrai: 'แม่น้ำกก จ.เชียงราย',
+  phitsanulok: 'แม่น้ำน่าน จ.พิษณุโลก', nakhonsawan: 'ปากน้ำโพ จ.นครสวรรค์',
+  kanchanaburi: 'แม่น้ำแคว จ.กาญจนบุรี', samutsongkhram: 'แม่น้ำแม่กลอง จ.สมุทรสงคราม',
+  suphanburi: 'แม่น้ำท่าจีน จ.สุพรรณบุรี', chachoengsao: 'แม่น้ำบางปะกง จ.ฉะเชิงเทรา',
+  nakhonphanom: 'แม่น้ำโขง จ.นครพนม', ubon: 'แม่น้ำมูล จ.อุบลราชธานี', surat: 'แม่น้ำตาปี จ.สุราษฎร์ธานี'
+};
 
 // ---- 9 KRATHONG TYPES ----
 const KRATHONG_TYPES = [
@@ -192,6 +203,7 @@ let audioPlaying = false;
 let oscillators = [];
 let communityList = [];
 let wishCount = 0;
+let saveInProgress = false;
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
@@ -200,9 +212,34 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTypeSelector();
   selectType(0);
   initCharCounter();
+  initEcoForm();
   loadCommunityWishes();
   setTimeout(() => initAudio(), 1500);
 });
+
+function initEcoForm() {
+  const wish = document.getElementById('inputWish');
+  const baseline = document.getElementById('inputBaseline');
+  document.querySelectorAll('.wish-tag').forEach((button) => {
+    button.addEventListener('click', () => {
+      wish.value = button.textContent.trim();
+      wish.dispatchEvent(new Event('input', { bubbles: true }));
+      wish.focus();
+    });
+  });
+  baseline.addEventListener('change', updateImpactPreview);
+  updateImpactPreview();
+}
+
+function currentImpact() {
+  return IMPACT[document.getElementById('inputBaseline').value] || IMPACT.natural;
+}
+
+function updateImpactPreview() {
+  const impact = currentImpact();
+  document.getElementById('impactCo2').textContent = impact.co2.toFixed(2);
+  document.getElementById('impactWaste').textContent = impact.waste.toFixed(2);
+}
 
 // ---- STARS ----
 function createStars() {
@@ -311,18 +348,28 @@ async function floatKrathong() {
     return;
   }
 
-  // Disable button
+  if (saveInProgress) return;
+
+  // Save before showing success, so users can retry if the sheet is unavailable.
   const btn = document.getElementById('btnFloat');
   btn.disabled = true;
   btn.style.opacity = '0.7';
+  saveInProgress = true;
+  setSaveStatus('กำลังบันทึกคำอธิษฐาน…', 'pending');
 
   const type = KRATHONG_TYPES[selectedTypeIndex];
+  const saved = await saveToSheet(name, wish, location, type, currentImpact());
+  if (!saved) {
+    setSaveStatus('บันทึกไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ Google Sheet แล้วลองอีกครั้ง', 'error');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    saveInProgress = false;
+    return;
+  }
 
   // Show float overlay
   showFloatAnimation(type, name, wish);
-
-  // Save to Google Sheet (non-blocking)
-  saveToSheet(name, wish, location);
+  setSaveStatus('บันทึกลง Google Sheet เรียบร้อยแล้ว', 'success');
 
   // Add to community
   addCommunityKrathong(type, name);
@@ -331,6 +378,13 @@ async function floatKrathong() {
 
   btn.disabled = false;
   btn.style.opacity = '1';
+  saveInProgress = false;
+}
+
+function setSaveStatus(message, state) {
+  const status = document.getElementById('saveStatus');
+  status.textContent = message;
+  status.dataset.state = state;
 }
 
 function showFloatAnimation(type, name, wish) {
@@ -342,6 +396,8 @@ function showFloatAnimation(type, name, wish) {
   floatArt.textContent = type.emoji;
   msgName.textContent = name;
   msgWish.textContent = `"${wish}"`;
+  const impact = currentImpact();
+  document.getElementById('floatMsgImpact').textContent = `กระทง “${type.name}” · ${LOCATION_LABELS[document.getElementById('inputLocation').value] || 'ประเทศไทย'} · ลดคาร์บอน ${impact.co2.toFixed(2)} kgCO₂e · ลดขยะ ${impact.waste.toFixed(2)} กก.`;
 
   overlay.classList.add('show');
   spawnParticles();
@@ -537,23 +593,37 @@ function loadImage(src) {
 }
 
 // ---- GOOGLE SHEET ----
-async function saveToSheet(name, wish, location) {
+async function saveToSheet(name, wish, location, type, impact) {
+  if (!SHEET_WEBHOOK || SHEET_WEBHOOK.includes('REPLACE_WITH')) {
+    console.error('Google Sheet endpoint is not configured.');
+    return false;
+  }
   const data = {
+    source: 'phyathai2-loykrathong',
     name,
     desc: wish,
     location,
+    locationLabel: LOCATION_LABELS[location] || location,
+    krathong: type.name,
+    baseline: document.getElementById('inputBaseline').value,
+    wasteKg: impact.waste,
+    avoidedCo2Kg: impact.co2,
     year: YEAR,
     timestamp: new Date().toLocaleString('th-TH')
   };
   try {
-    await fetch(SHEET_WEBHOOK, {
+    const response = await fetch(SHEET_WEBHOOK, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data),
+      redirect: 'follow'
     });
+    if (!response.ok) return false;
+    const result = await response.json();
+    return result.ok === true;
   } catch (e) {
-    console.warn('Sheet save error (non-critical):', e);
+    console.error('Google Sheet save error:', e);
+    return false;
   }
 }
 
@@ -613,7 +683,7 @@ function openWishesWall() {
       <div class="wish-item-info">
         <div class="wish-item-name">${item.name}</div>
         <div class="wish-item-text">${item.type.name}</div>
-        <div class="wish-item-meta">🌿 ลดขยะ ๑๐๐% • ${YEAR}</div>
+        <div class="wish-item-meta">🌿 ลดขยะและคาร์บอน • ${YEAR}</div>
       </div>
     `;
     body.appendChild(div);
