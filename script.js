@@ -163,18 +163,20 @@ continueBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// Save to Google Sheet using API route or sync endpoint
+// Save to Google Sheet using Apps Script Web App
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxovjMWLTCTzCxF4TLwVjfooHgT5sXFr6p0Ml4oSlmaGTkdUe1r6LeYVId07GmQBD9F/exec";
+
 async function recordToSheet(name, desc) {
   try {
-    // If running in local/Vercel with /api/sheet, call it
-    await fetch("/api/save-wish", {
+    await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, desc, timestamp: new Date().toISOString() })
     });
+    console.log("Successfully sent to Google Sheet:", { name, desc });
   } catch (err) {
-    // Fallback: stored in browser local state securely
-    console.log("Local sync stored:", { name, desc });
+    console.error("Failed to send to Google Sheet:", err);
   }
 }
 
