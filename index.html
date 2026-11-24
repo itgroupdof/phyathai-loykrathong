@@ -441,7 +441,7 @@ $("launch").onclick=async()=>{
   const location=LOCS.find(l=>l.id===item.loc), design=DES.find(d=>d.id===item.design);
   const payload={source:"phyathai2-loykrathong",name:item.name,desc:item.wish,location:item.loc,
     locationLabel:location?location.lab:item.loc,krathong:design?design.t:"",design:item.design,baseline:item.base,
-    wasteKg:item.kg,avoidedCo2Kg:item.co2,year:"๒๕๖๙",timestamp:new Date().toLocaleString("th-TH")};
+    wasteKg:item.kg,avoidedCo2Kg:item.co2,year:"๒๕๖๙",ts:item.ts,wish:item.wish,loc:item.loc,base:item.base,timestamp:new Date().toLocaleString("th-TH")};
   try{
     if(!SHEET_WEBHOOK||SHEET_WEBHOOK.includes("REPLACE_WITH")) throw new Error("ยังไม่ได้ตั้งค่า Google Sheets endpoint");
     await fetch(SHEET_WEBHOOK,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
@@ -652,7 +652,7 @@ $("imgBtn").onclick=()=>openShare(currentItem());
     wishes=(Array.isArray(rows)?rows:[]).map(x=>({
       name:String(x.name||"").slice(0,40),wish:String(x.wish||"").slice(0,200),
       design:DES.some(z=>z.id===x.design)?x.design:"lotus",
-      loc:LOCS.some(z=>z.id===x.loc)?x.loc:"bkk",base:x.base==="bread"?"bread":"nat",ts:Number(x.ts)||Date.now()
+      loc:LOCS.some(z=>z.id===x.loc)?x.loc:"bkk",base:BASES.some(z=>z.id===x.base)?x.base:"nat",ts:Number(x.ts)||Date.now()
     }));
     $("sync").textContent="● เชื่อมต่อลานคำอธิษฐาน Google Sheets แล้ว";renderAll();
   };
