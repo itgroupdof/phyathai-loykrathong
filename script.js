@@ -7,7 +7,7 @@
 
 // ---- CONFIG ----
 // Configure this URL in the Apps Script Web App deployment. Leave empty to disable cloud saves.
-const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbxovjMWLTCTzCxF4TLwVjfooHgT5sXFr6p0Ml4oSlmaGTkdUe1r6LeYVId07GmQBD9F/exec';
+const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbz_-E6eH_4aVqXsuqtDsFGrq-1wS9KZa2CIPGc7HpQ763yaX-jv-EbPd8rB3A_nKB0/exec';
 const YEAR = '๒๕๖๙';
 const IMPACT = { natural: { waste: 0.50, co2: 0.86 }, bread: { waste: 0.30, co2: 0.39 } };
 const LOCATION_LABELS = {
