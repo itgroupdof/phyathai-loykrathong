@@ -11,7 +11,7 @@ const HEADERS = ['เวลาบันทึก','ชื่อผู้ร่�
 
 function sheet_() {
   const ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  let sh = ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
   if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
   return sh;
 }
